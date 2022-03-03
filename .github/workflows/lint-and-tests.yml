@@ -15,17 +15,26 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.10'
-      - name: Install and configure Poetry
-        uses: snok/install-poetry@v1
+      - name: Install Poetry
+        uses: dschep/install-poetry-action@v1.2
+      - name: Cache Poetry virtualenv
+        uses: actions/cache@v1
+        id: cache
         with:
-          version: 1.1.11
-      - name: Install dependencies
-        run:
-          poetry install
-      - name: Run lint
+          path: ~/.virtualenvs
+          key: poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            poetry-${{ hashFiles('**/poetry.lock') }}
+      - name: Set Poetry config
         run: |
-          source .venv/bin/activate
+          poetry config settings.virtualenvs.in-project false
+          poetry config settings.virtualenvs.path ~/.virtualenvs
+      - name: Install Dependencies
+        run: poetry install
+        if: steps.cache.outputs.cache-hit != 'true'
+      - name: Run lint
+        run:
           pre-commit run --all-files
       - name: Run tests
-        run: |
+        run:
           python -m pytest tests/
