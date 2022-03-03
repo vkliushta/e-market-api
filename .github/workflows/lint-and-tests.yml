@@ -20,7 +20,7 @@ jobs:
         with:
           version: 1.1.11
       - name: Install dependencies
-        run:
+        run: |
           poetry shell
           poetry install
       - name: Run pre-commit hooks
