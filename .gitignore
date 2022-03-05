@@ -130,3 +130,6 @@ dmypy.json
 
 # ide
 .idea/
+
+# database
+/sql_app.db
