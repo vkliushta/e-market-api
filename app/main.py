@@ -1,12 +1,18 @@
 import uvicorn
 from fastapi import FastAPI
 
+from app.routers import items, users
+
 app = FastAPI()
+
+
+app.include_router(users.router)
+app.include_router(items.router)
 
 
 @app.get("/")
 async def root():
-    return {"message": "Dummy message"}
+    return {"message": "Hello Bigger Applications!"}
 
 
 if __name__ == "__main__":

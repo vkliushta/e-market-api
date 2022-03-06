@@ -132,4 +132,4 @@ dmypy.json
 .idea/
 
 # database
-/sql_app.db
+/app/sql_app.db
